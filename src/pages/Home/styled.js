@@ -84,7 +84,7 @@ export const PageArea = styled.div`
     display: flex;
     flex-wrap: wrap;
 
-    .adItem {
+    .addItem {
       width: 25%;
     }
   }

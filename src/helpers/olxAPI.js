@@ -75,6 +75,10 @@ const olxAPI = {
     const json = await apiFetchGet('/ad/list', options);
     return json;
   },
+  getADD: async (id, other) => {
+    const json = await apiFetchGet('/ad/item', { id, other });
+    return json;
+  },
 };
 
 export default () => olxAPI ;

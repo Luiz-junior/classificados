@@ -59,7 +59,7 @@ const Home = props => {
             {categories.map((item, i) =>
               <Link key={i} to={`/ads?cat=${item.slug}`} className="categoryItem">
                 <img src={item.img} alt="" />
-                <span>{ item.name }</span>
+                <span>{item.name}</span>
               </Link>
             )}
           </div>
@@ -70,7 +70,7 @@ const Home = props => {
         <PageArea>
           <h2>Anúncios Recentes</h2>
           <div className="list">
-            {addList.map((item, i) => 
+            {addList.map((item, i) =>
               <AddItem key={i} data={item} />
             )}
           </div>
@@ -80,7 +80,7 @@ const Home = props => {
           <p>
             Loerem ca camicioandoicandiocand acnaodjcnaodncaoidcnaoidchad cahdcoadhco
           </p>
-      </PageArea>
+        </PageArea>
       </PageContainer>
     </>
   );

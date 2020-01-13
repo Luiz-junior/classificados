@@ -5,13 +5,10 @@ import { Link } from 'react-router-dom';
 const AddItem = props => {
   let price = '';
 
-  if(props.data.priceNegotiable) 
-    price = 'Preço Negociável';
-  else 
-    price = `R$ ${props.data.price}`;
-  
+  props.data.priceNegotiable ? price = 'Preço Negociável' : price = `R$ ${props.data.price}`;
+
   return (
-    <Item className="adItem">
+    <Item className="addItem">
       <Link to={`/ad/${props.data.id}`}>
         <div className="itemImage">
           <img src={props.data.image} alt="" />

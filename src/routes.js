@@ -6,6 +6,7 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import AdPage from './pages/AdPage';
 
 export default () => {
   return (
@@ -14,6 +15,7 @@ export default () => {
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/ad/:id" component={AdPage} />
       <Route> <NotFound /> </Route>
     </Switch>
   )
