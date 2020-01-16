@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { PageArea, Fake } from './styled';
+import { useParams, Link } from 'react-router-dom';
+import { Slide } from 'react-slideshow-image';
+
+import { PageArea, Fake, OthersArea, BreadCrumb } from './styled';
+import AddItem from '../../components/partials/AddItem';
 import { PageContainer } from '../../components/MainComponentes';
 import useAPI from '../../helpers/olxAPI';
 
@@ -33,11 +36,32 @@ const AdPage = props => {
 
   return (
     <PageContainer>
+      {addInfo.category &&
+        <BreadCrumb>
+          Você está aqui:
+          <Link to="/"> Home </Link>
+            /
+          <Link to={`/ads?state=${addInfo.stateName}`}> {addInfo.stateName} </Link>
+            /
+          <Link to={`/ads?state=${addInfo.stateName}&cat=${addInfo.category.slug}`}> {addInfo.category.name} </Link>
+            / {addInfo.title}
+        </BreadCrumb>
+      }
+
       <PageArea>
         <div className="leftSide">
           <div className="box">
             <div className="addImage">
               {loading && <Fake height={300} />}
+              {addInfo.images &&
+                <Slide>
+                  {addInfo.images.map((item, i) =>
+                    <div key={i} className="each-slide">
+                      <img src={item} alt="" />
+                    </div>
+                  )}
+                </Slide>
+              }
             </div>
             <div className="addInfo">
               <div className="addName">
@@ -53,7 +77,7 @@ const AdPage = props => {
                 {loading && <Fake height={100} />}
                 {addInfo.description}
                 <hr />
-                {addInfo.views && 
+                {addInfo.views &&
                   <small>Visualizações: {addInfo.views}</small>
                 }
               </div>
@@ -63,12 +87,41 @@ const AdPage = props => {
         <div className="rightSide">
           <div className="box box--padding">
             {loading && <Fake height={20} />}
+            {addInfo.priceNegotiable &&
+              "Preço Negociável"
+            }
+            {!addInfo.priceNegotiable && addInfo.price &&
+              <div className="price"> Preço: <span>R$ {addInfo.price}</span> </div>
+            }
           </div>
-          <div className="box box--padding">
-            {loading && <Fake height={50} />}
-          </div>
+
+          {loading && <Fake height={50} />}
+          {addInfo.userInfo &&
+            <>
+              <a href={`mailto:${addInfo.userInfo.email}`} target="_blank" className="contactSellerLink">Fale com o vendedor</a>
+              <div className="created-by box box--padding">
+                <strong>{addInfo.userInfo.email}</strong>
+                <small>E-mail: {addInfo.userInfo.email}</small>
+                <small>Estado: {addInfo.stateName}</small>
+              </div>
+            </>
+          }
+
         </div>
       </PageArea>
+
+      <OthersArea>
+        {addInfo.others &&
+          <>
+            <h2>Outras ofertas do vendedor</h2>
+            <div className="list">
+              {addInfo.others.map((item, i) =>
+                <AddItem key={i} data={item} />
+              )}
+            </div>
+          </>
+        }
+      </OthersArea>
     </PageContainer>
   );
 }
