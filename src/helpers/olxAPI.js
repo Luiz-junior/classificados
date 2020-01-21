@@ -3,10 +3,33 @@ import qs from 'qs';
 
 const BASE_API = 'http://alunos.b7web.com.br:501';
 
-const apiFetchPost = async (endpoint, body) => {
-  if(!body.token) {
+const apiFetchFile = async (endpoint, body) => {
+  if (!body.token) {
     let token = Cookies.get('token');
-    if(token) {
+    if (token) {
+      body.append('token', token);
+    }
+  }
+
+  const res = await fetch(BASE_API + endpoint, {
+    method: 'POST',
+    body
+  });
+
+  const json = await res.json();
+
+  if (json.notallowed) {
+    window.location.href = '/signin';
+    return;
+  }
+
+  return json;
+};
+
+const apiFetchPost = async (endpoint, body) => {
+  if (!body.token) {
+    let token = Cookies.get('token');
+    if (token) {
       body.token = token;
     }
   }
@@ -22,7 +45,7 @@ const apiFetchPost = async (endpoint, body) => {
 
   const json = await res.json();
 
-  if(json.notallowed) {
+  if (json.notallowed) {
     window.location.href = '/signin';
     return;
   }
@@ -31,9 +54,9 @@ const apiFetchPost = async (endpoint, body) => {
 };
 
 const apiFetchGet = async (endpoint, body = []) => {
-  if(!body.token) {
+  if (!body.token) {
     let token = Cookies.get('token');
-    if(token) {
+    if (token) {
       body.token = token;
     }
   }
@@ -41,7 +64,7 @@ const apiFetchGet = async (endpoint, body = []) => {
   const res = await fetch(`${BASE_API + endpoint}?${qs.stringify(body)}`);
   const json = await res.json();
 
-  if(json.notallowed) {
+  if (json.notallowed) {
     window.location.href = '/signin';
     return;
   }
@@ -79,6 +102,10 @@ const olxAPI = {
     const json = await apiFetchGet('/ad/item', { id, other });
     return json;
   },
+  addAd: async (fData) => {
+    const json = await apiFetchFile('/ad/add', fData);
+    return json;
+  }
 };
 
-export default () => olxAPI ;
+export default () => olxAPI;
